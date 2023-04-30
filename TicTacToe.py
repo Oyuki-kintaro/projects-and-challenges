@@ -1,11 +1,24 @@
 
 
 # print menu
-#   Choose your opponent? Computer(c) or player2(p) or exit(q)?
 
-# recieve input from user
 
-# check string matches options
+while True:
+
+    #   Choose your opponent? Computer(c) or player2(p) or exit(q)?
+    play_response = input("Choose your opponent? Computer(c) or player2(p) or exit(q)? \n").lower()
+
+    if play_response == "q":
+        print("Exiting Game")
+        break
+    elif play_response == "c":
+        print("opponent chosen: computer")
+    elif play_response == "p":
+        print("opponent chosen: player")
+    else:
+        print("ERROR: Input Incorrect")
+
+
 
 # deny and reask if not match options
 # else start game
