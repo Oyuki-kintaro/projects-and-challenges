@@ -21,8 +21,8 @@ perform the address translation and generate a corresponding physical address
 ## Example
 
 Logical (12 bit) Address <br />
-0xD29      {1101 0}{010 1001} => {page table 26}{offset}
+0x0BC      {0000 1}{011 1100} => {page table 26}{offset}
 
 Physical (10 bit) Address <br />
-0x2A9      {xx10 1}{010 1001}
+0x23C      {xx10 0}{011 1100}
 
