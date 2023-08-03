@@ -13,19 +13,16 @@ corresponding physical addresses based on the pagetable data given above. Each l
 perform the address translation and generate a corresponding physical address
 
 ## Calculate Offset and Page Table Entries
-2^12 = 4096 bytes   =>   12 bits = logical virtual memory
-
-2^10 = 1028 bytes   =>   10 bits = physical memory
-
-2^7  =  128 bytes   =>    7 bits = offset (d)
-
-12 - 7 = 5 bits     =>      2^5  = 32 page table entries
+2^12 = 4096 bytes   =>   12 bits = logical virtual memory<br />
+2^10 = 1028 bytes   =>   10 bits = physical memory<br />
+2^7  =  128 bytes   =>    7 bits = offset (d)<br />
+12 - 7 = 5 bits     =>      2^5  = 32 page table entries<br />
 
 ## Example
 
-Logical (12 bit) Address 
+Logical (12 bit) Address <br />
 0xD29      {1101 0}{010 1001} => {page table 26}{offset}
 
-Physical (10 bit) Address 
+Physical (10 bit) Address <br />
 0x2A9      {xx10 1}{010 1001}
 
