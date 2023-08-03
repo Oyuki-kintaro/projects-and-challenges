@@ -4,7 +4,7 @@
 2. usage example:  ./translate addresses1 addresses1.output
 
 
-The reference computing system for this challenge has the following properties: 1K physical memory, 4K virtual memory, and 128 bytes per page and frame.
+The reference computing system for this challenge has the following properties: **1K physical memory, 4K virtual memory, and 128 bytes per page and frame**.
 
 Here is a program that takes in only two parameters, an infile, which is a file containing logical memory accesses, and the outfile, which output is written to. 
 
@@ -13,9 +13,9 @@ corresponding physical addresses based on the pagetable data given above. Each l
 perform the address translation and generate a corresponding physical address
 
 ## Calculate Offset and Page Table Entries
-2^12 = 4096 bytes   =>   12 bits = logical virtual memory<br />
-2^10 = 1028 bytes   =>   10 bits = physical memory<br />
-2^7  =  128 bytes   =>    7 bits = offset (d)<br />
+2^12 = 4096K   =>   12 bits = logical virtual memory<br />
+2^10 = 1028K   =>   10 bits = physical memory<br />
+2^7  =  128K   =>    7 bits = offset (d)<br />
 12 - 7 = 5 bits     =>      2^5  = 32 page table entries<br />
 
 ## Example
