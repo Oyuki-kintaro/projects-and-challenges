@@ -14,7 +14,9 @@ perform the address translation and generate a corresponding physical address
 
 ## Calculate Offset and Page Table Entries
 2^12 = 4096 bytes   =>   12 bits = logical virtual memory
+
 2^10 = 1028 bytes   =>   10 bits = physical memory
+
 2^7  =  128 bytes   =>    7 bits = offset (d)
 
 12 - 7 = 5 bits     =>      2^5  = 32 page table entries
