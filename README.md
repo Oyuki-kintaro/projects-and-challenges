@@ -12,6 +12,8 @@ Each logical address in the infile is saved as 8 bytes (unsigned long) in binary
 corresponding physical addresses based on the pagetable data given above. Each logical address in the sequence file, you will use the pagetable given above to 
 perform the address translation and generate a corresponding physical address
 
+![page-table-image](images/page_table.png)
+
 ## Calculate Offset and Page Table Entries
 2^12 = 4096K   =>   12 bits = logical virtual memory<br />
 2^10 = 1028K   =>   10 bits = physical memory<br />
