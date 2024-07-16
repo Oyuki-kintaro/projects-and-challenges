@@ -18,8 +18,12 @@ def binary_mapping(image_path):
     return binary
 
 def find_landmarks(binary_image):
-    # Find contours
-    contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # Define the region of interest: from the top of the image to the middle
+    height, width = binary_image.shape
+    roi = binary_image[:height * 3 // 5, :]
+    
+    # Find contours in the region of interest
+    contours, _ = cv2.findContours(roi, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     # Assuming the largest contour is the hand
     hand_contour = max(contours, key=cv2.contourArea)
     # Find convex hull and convexity defects
@@ -36,7 +40,6 @@ def find_landmarks(binary_image):
             s, e, f, d = defects[i, 0]
             start = tuple(hand_contour[s][0])
             end = tuple(hand_contour[e][0])
-            far = tuple(hand_contour[f][0])
             landmarks.extend([start, end])
     
     # Remove duplicate points
@@ -56,8 +59,20 @@ def find_landmarks(binary_image):
     
     # Filter out points that are too far from the convex hull (likely on the arm)
     unique_landmarks = [point for point in unique_landmarks if cv2.pointPolygonTest(np.array(hull_points), (int(point[0]), int(point[1])), True) > -50]
-
+    
+    # Ensure we have exactly 5 fingertips
+    if len(unique_landmarks) > 5:
+        # Sort landmarks based on y-coordinate (height) and keep the top 5 fingertips
+        unique_landmarks = sorted(unique_landmarks, key=lambda x: x[1])[:5]
+    elif len(unique_landmarks) < 5:
+        raise ValueError("Could not identify exactly 5 fingertips.")
+    
+    # Find the base of the palm by taking the bottom-most point in the hand contour within the ROI
+    base_palm = tuple(max(hand_contour, key=lambda x: x[0][1])[0])
+    unique_landmarks.append(base_palm)
+    
     return hand_contour, unique_landmarks
+
 
 def draw_skeleton(image, hand_contour, landmarks):
     # Draw hand contour
@@ -65,10 +80,13 @@ def draw_skeleton(image, hand_contour, landmarks):
     # Draw landmarks
     for point in landmarks:
         cv2.circle(image, point, 5, (0, 0, 255), -1)
-    # Connect landmarks with edges
-    for i in range(len(landmarks)):
-        for j in range(i + 1, len(landmarks)):
-            cv2.line(image, landmarks[i], landmarks[j], (255, 0, 0), 1)
+    
+    # Connect fingertips to the base of the palm
+    base_palm = max(landmarks, key=lambda x: x[1])  # Bottom-most point
+    for point in landmarks:
+        if tuple(point) != tuple(base_palm):
+            cv2.line(image, point, base_palm, (255, 0, 0), 2)
+
     return image
 
 def main(image_path):
@@ -78,7 +96,7 @@ def main(image_path):
     skeleton_image = draw_skeleton(original_image, hand_contour, landmarks)
     
     # Display results
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(10, 5))
     plt.subplot(1, 3, 1)
     plt.title('Original Image')
     plt.imshow(cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB))
@@ -93,6 +111,6 @@ def main(image_path):
     
     plt.show()
 
-# Path to the JPEG image of a hand
+# Path to the image
 image_path = 'hand.jpg'
 main(image_path)
